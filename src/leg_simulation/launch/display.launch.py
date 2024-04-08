@@ -1,6 +1,7 @@
-import launch
 from launch.substitutions import Command, LaunchConfiguration
+from launch_ros.descriptions import ParameterValue
 import launch_ros
+import launch
 import os
 
 def generate_launch_description():
@@ -9,10 +10,13 @@ def generate_launch_description():
     default_model_path = os.path.join(pkg_share, 'description/leg.xacro')
     default_rviz_config_path = os.path.join(pkg_share, 'rviz/urdf_config.rviz')
 
+    # Store the xacro urdf robot description
+    robot_description = Command(['xacro ', LaunchConfiguration('model')])
+
     robot_state_publisher_node = launch_ros.actions.Node(
         package='robot_state_publisher',
         executable='robot_state_publisher',
-        parameters=[{'robot_description': Command(['xacro ', LaunchConfiguration('model')])}]
+        parameters=[{'robot_description': ParameterValue(robot_description, value_type=str)}]
     )
 
     joint_state_publisher_node = launch_ros.actions.Node(
