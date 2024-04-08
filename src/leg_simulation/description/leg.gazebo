@@ -1,0 +1,77 @@
+<?xml version="1.0" ?>
+<robot name="leg_urdf" xmlns:xacro="http://www.ros.org/wiki/xacro" >
+
+<xacro:property name="body_color" value="Gazebo/Silver" />
+
+<!-- 
+  This plugin will publish the joint_states for the selected joints.
+  The robot_state_publisher can then use the joint_states to broadcast
+  the appropriate TFs.
+-->
+<gazebo>
+  <plugin name="gazebo_ros_joint_state_publisher" 
+    filename="libgazebo_ros_joint_state_publisher.so">
+    <update_rate>20</update_rate>
+    <joint_name>coxa_joint</joint_name>
+    <joint_name>femur_joint</joint_name> 
+    <joint_name>tibia_joint</joint_name>
+  </plugin>
+</gazebo>
+
+<!-- 
+  This plugin will read a JointTrajectory message from the /set_joint_trajectory topic 
+  and move the machine accordingly. It's a bit clunky but it works. 
+  Here's an example message to publish to test it:
+  ros2 topic pub -1 /set_joint_trajectory trajectory_msgs/msg/JointTrajectory  '{header: {frame_id: world}, joint_names: [coxa_joint,femur_joint,tibia_joint], points: [{positions: {0.0,0.0,0.0}}]}'
+-->
+<gazebo>
+  <plugin name="gazebo_ros_joint_pose_trajectory"
+    filename="libgazebo_ros_joint_pose_trajectory.so">
+    <update_rate>20</update_rate>
+  </plugin>
+</gazebo>
+
+<gazebo reference="base_link">
+  <material>${body_color}</material>
+  <mu1>0.2</mu1>
+  <mu2>0.2</mu2>
+  <selfCollide>true</selfCollide>
+  <gravity>true</gravity>
+</gazebo>
+
+<gazebo reference="coxa_link">
+  <material>${body_color}</material>
+  <mu1>0.2</mu1>
+  <mu2>0.2</mu2>
+  <selfCollide>true</selfCollide>
+</gazebo>
+
+<gazebo reference="femur_motor">
+  <material>${body_color}</material>
+  <mu1>0.2</mu1>
+  <mu2>0.2</mu2>
+  <selfCollide>true</selfCollide>
+</gazebo>
+
+<gazebo reference="femur_link">
+  <material>${body_color}</material>
+  <mu1>0.2</mu1>
+  <mu2>0.2</mu2>
+  <selfCollide>true</selfCollide>
+</gazebo>
+
+<gazebo reference="tibia_motor">
+  <material>${body_color}</material>
+  <mu1>0.2</mu1>
+  <mu2>0.2</mu2>
+  <selfCollide>true</selfCollide>
+</gazebo>
+
+<gazebo reference="tibia_link">
+  <material>${body_color}</material>
+  <mu1>0.2</mu1>
+  <mu2>0.2</mu2>
+  <selfCollide>true</selfCollide>
+</gazebo>
+
+</robot>

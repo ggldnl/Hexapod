@@ -1,0 +1,37 @@
+<?xml version="1.0" ?>
+<robot name="leg_urdf" xmlns:xacro="http://www.ros.org/wiki/xacro" >
+
+<transmission name="coxa_joint_tran">
+  <type>transmission_interface/SimpleTransmission</type>
+  <joint name="coxa_joint">
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+  </joint>
+  <actuator name="coxa_joint_actr">
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    <mechanicalReduction>1</mechanicalReduction>
+  </actuator>
+</transmission>
+
+<transmission name="femur_joint_tran">
+  <type>transmission_interface/SimpleTransmission</type>
+  <joint name="femur_joint">
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+  </joint>
+  <actuator name="femur_joint_actr">
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    <mechanicalReduction>1</mechanicalReduction>
+  </actuator>
+</transmission>
+
+<transmission name="tibia_joint_tran">
+  <type>transmission_interface/SimpleTransmission</type>
+  <joint name="tibia_joint">
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+  </joint>
+  <actuator name="tibia_joint_actr">
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    <mechanicalReduction>1</mechanicalReduction>
+  </actuator>
+</transmission>
+
+</robot>

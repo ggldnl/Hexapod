@@ -1,0 +1,192 @@
+<?xml version="1.0" ?>
+<robot name="leg" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+<xacro:include filename="materials.xacro" />
+<xacro:include filename="leg.trans" />
+<xacro:include filename="leg.gazebo" />
+
+<!-- World link is empty -->
+<link name="world"></link>
+
+<!-- Fix the base link to the world -->
+<joint name="base_joint" type="fixed">
+  <origin xyz="0 0 0.1" rpy="0.0 0.0 0.0"/>
+  <parent link="world"/>
+  <child link="base_link"/>
+</joint>
+
+<link name="base_link">
+  <inertial>
+    <origin xyz="0.02084957277113914 -4.999999927405297e-05 0.005464678664040545" rpy="0 0 0"/>
+    <mass value="0.20788625758845178"/>
+    <inertia ixx="2.8e-05" iyy="5.1e-05" izz="3.6e-05" ixy="-0.0" iyz="0.0" ixz="-0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://leg_simulation/meshes/base_link.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://leg_simulation/meshes/base_link.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="coxa_link">
+  <inertial>
+    <origin xyz="0.026007485429621068 3.059509432910487e-14 0.01818438994852521" rpy="0 0 0"/>
+    <mass value="0.06587869059252294"/>
+    <inertia ixx="3.9e-05" iyy="5.5e-05" izz="1.8e-05" ixy="0.0" iyz="0.0" ixz="-1e-06"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.03085 5e-05 0.0171" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://leg_simulation/meshes/coxa_link.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="-0.03085 5e-05 0.0171" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://leg_simulation/meshes/coxa_link.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="femur_motor">
+  <inertial>
+    <origin xyz="0.0052500000007259795 -0.008485321335959455 -0.024450427228860868" rpy="0 0 0"/>
+    <mass value="0.20788625758845167"/>
+    <inertia ixx="5.1e-05" iyy="3.6e-05" izz="2.8e-05" ixy="0.0" iyz="-0.0" ixz="-0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.067595 -0.00695 -0.0262" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://leg_simulation/meshes/femur_motor.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="-0.067595 -0.00695 -0.0262" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://leg_simulation/meshes/femur_motor.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="femur_link">
+  <inertial>
+    <origin xyz="0.003276894450832013 0.01867044570423858 0.04204079165069964" rpy="0 0 0"/>
+    <mass value="0.1650857236389534"/>
+    <inertia ixx="0.000133" iyy="7.2e-05" izz="8.9e-05" ixy="4e-06" iyz="-4e-06" ixz="-1e-05"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.072845 0.0241 -0.01175" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://leg_simulation/meshes/femur_link.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="-0.072845 0.0241 -0.01175" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://leg_simulation/meshes/femur_link.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="tibia_motor">
+  <inertial>
+    <origin xyz="-1.1441156910763084e-07 0.02261467866404055 -0.010000413412594583" rpy="0 0 0"/>
+    <mass value="0.20788625758845158"/>
+    <inertia ixx="5.1e-05" iyy="3.6e-05" izz="2.8e-05" ixy="0.0" iyz="-0.0" ixz="-0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.101502 0.0241 -0.072527" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://leg_simulation/meshes/tibia_motor.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="-0.101502 0.0241 -0.072527" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://leg_simulation/meshes/tibia_motor.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="tibia_link">
+  <inertial>
+    <origin xyz="0.0006676280408034474 -0.009300654358669749 -0.0385331849230801" rpy="0 0 0"/>
+    <mass value="0.08248755202535803"/>
+    <inertia ixx="8e-05" iyy="8.2e-05" izz="5e-06" ixy="0.0" iyz="-2e-06" ixz="1e-06"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.107252 -0.00705 -0.087027" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://leg_simulation/meshes/tibia_link.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="-0.107252 -0.00705 -0.087027" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://leg_simulation/meshes/tibia_link.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<joint name="coxa_joint" type="revolute">
+  <origin xyz="0.03085 -5e-05 -0.0171" rpy="0 0 0"/>
+  <parent link="base_link"/>
+  <child link="coxa_link"/>
+  <axis xyz="0.0 -0.0 -1.0"/>
+  <limit upper="1.570796" lower="-1.570796" effort="100" velocity="100"/>
+  <dynamics damping="10.0" friction="10.0"/>
+  <!-- 
+
+  -->
+</joint>
+
+<joint name="coxa_link_femur_motor" type="fixed">
+  <origin xyz="0.036745 0.007 0.0433" rpy="0 0 0"/>
+  <parent link="coxa_link"/>
+  <child link="femur_motor"/>
+</joint>
+
+<joint name="femur_joint" type="revolute">
+  <origin xyz="0.00525 -0.03105 -0.01445" rpy="0 0 0"/>
+  <parent link="femur_motor"/>
+  <child link="femur_link"/>
+  <axis xyz="-0.0 -1.0 0.0"/>
+  <limit upper="0.872665" lower="-1.570796" effort="100" velocity="100"/>
+  <dynamics damping="10.0" friction="10.0"/>
+  <!--
+
+  -->
+</joint>
+
+<joint name="tibia_joint" type="revolute">
+  <origin xyz="0.028657 0.0 0.060777" rpy="0 0 0"/>
+  <parent link="femur_link"/>
+  <child link="tibia_motor"/>
+  <axis xyz="0.0 1.0 -0.0"/>
+  <limit upper="0.0" lower="-3.141593" effort="100" velocity="100"/>
+  <dynamics damping="10.0" friction="10.0"/>
+  <!--
+
+  -->
+</joint>
+
+<joint name="tibia_motor_tibia_link" type="fixed">
+  <origin xyz="0.00575 0.03115 0.0145" rpy="0 0 0"/>
+  <parent link="tibia_motor"/>
+  <child link="tibia_link"/>
+</joint>
+
+</robot>
