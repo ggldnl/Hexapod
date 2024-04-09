@@ -1,4 +1,4 @@
-# 🤖 Hexapod simulation
+# 🤖 Hexapod ROS node
 
 Hello world
 
@@ -30,10 +30,12 @@ ros2 launch leg_simulation gazebo.launch.py
 ros2 topic pub -1 /set_joint_trajectory trajectory_msgs/msg/JointTrajectory  '{header: {frame_id: world}, joint_names: [coxa_joint,femur_joint,tibia_joint], points: [{positions: {0.0,0.0,0.0}}]}'
 ```
 
-The latter, as is, will put the leg in the default configuration; play with the joint values (positions) to try new configurations. Once the simulation starts the robot will be affected by gravity, so it will slowly collapse after a joint value is set.
+The latter, as is, will put the leg in the default configuration; play with the joint values (positions) to try new configurations.
 The coxa joint can take values between -pi/2 (-90 deg) and pi/2 (90 deg).
 The femur joint can take values between -pi/2 (-90 deg) and 0.87 (50 deg).
 The tibia joint can take values between -pi (-180 deg) and 0.
+
+# Body simulation & visualization
 
 # Directory Structure
 

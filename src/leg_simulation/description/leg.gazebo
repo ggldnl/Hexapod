@@ -36,7 +36,7 @@
   <mu1>0.2</mu1>
   <mu2>0.2</mu2>
   <selfCollide>true</selfCollide>
-  <gravity>true</gravity>
+  <gravity>false</gravity>
 </gazebo>
 
 <gazebo reference="coxa_link">
@@ -44,6 +44,7 @@
   <mu1>0.2</mu1>
   <mu2>0.2</mu2>
   <selfCollide>true</selfCollide>
+  <gravity>false</gravity>
 </gazebo>
 
 <gazebo reference="femur_motor">
@@ -51,6 +52,7 @@
   <mu1>0.2</mu1>
   <mu2>0.2</mu2>
   <selfCollide>true</selfCollide>
+  <gravity>false</gravity>
 </gazebo>
 
 <gazebo reference="femur_link">
@@ -58,6 +60,7 @@
   <mu1>0.2</mu1>
   <mu2>0.2</mu2>
   <selfCollide>true</selfCollide>
+  <gravity>false</gravity>
 </gazebo>
 
 <gazebo reference="tibia_motor">
@@ -65,6 +68,7 @@
   <mu1>0.2</mu1>
   <mu2>0.2</mu2>
   <selfCollide>true</selfCollide>
+  <gravity>false</gravity>
 </gazebo>
 
 <gazebo reference="tibia_link">
@@ -72,6 +76,7 @@
   <mu1>0.2</mu1>
   <mu2>0.2</mu2>
   <selfCollide>true</selfCollide>
+  <gravity>false</gravity>
 </gazebo>
 
 </robot>
