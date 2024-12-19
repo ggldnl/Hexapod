@@ -38,6 +38,6 @@ The project is split into several repositories. Each repository focuses on a spe
 - Offering detailed guides for replicating the project.
 - Providing accessible resources for everyone to build their own hexapod robots.
 
-## Contribution
+## 🤝 Contribution
 
 Feel free to contribute by opening issues or submitting pull requests. 
