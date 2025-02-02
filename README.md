@@ -1,4 +1,4 @@
-# The Hexapod Project 🤖
+# The Hexapod Project
 
 ## ⚠️ Work in Progress
 
