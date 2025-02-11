@@ -41,3 +41,4 @@ The project is split into several repositories. Each repository focuses on a spe
 ## 🤝 Contribution
 
 Feel free to contribute by opening issues or submitting pull requests. 
+Give a ⭐️ to this project if you liked the content.
