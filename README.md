@@ -42,7 +42,7 @@ The project is split into several repositories. Each repository focuses on a spe
 6. **[Hexapod-PCB](https://github.com/ggldnl/Hexapod-PCB)**
    - Files necessary to order an optional PCB that will make assembly easier and cleaner.
 
-A viewer is accessible [here](https://ggldnl.github.io/projects/hexapod_dashboard/dashboard/index.html) without the need to instasll anything. This will let you interact with the robot and see it perform some basic animations. With the dashboard you will instead be able to connect to your robot and check its state real time (joint values, servo voltage, current draw, ...).
+A viewer is accessible [here](https://ggldnl.github.io/projects/hexapod_dashboard/dashboard/index.html) without the need to install anything. This will let you interact with the robot and see it perform some basic animations. With the dashboard you will instead be able to connect to your robot and check its state real time (joint values, servo voltage, current draw, ...).
 
 ## 🤝 Contribution
 
