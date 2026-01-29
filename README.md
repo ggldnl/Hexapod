@@ -2,41 +2,47 @@
 
 ## ⚠️ Work in Progress
 
-This project is actively under development. Features are being added, refined, and tested continuously.
+This project is actively under development.
 
 ## 🦾 Introduction
 
-The Hexapod Robot Project aims to create a completely open source six-legged robotic platform. I've always been fascinated by this kind of robots and I wanted to explore and experiment with a hexapod but I found that, even with a lot of resources available out there, I could not find a comprehensive guide from start to finish that showed how to deal with the electronics, code, the underlying mathematical model and so on. A great example is [Make Your Pet's hexapod robot](https://www.makeyourpet.com/) (from which I took inspiration) which is very good, with a huge community, but with a closed source app that handles the inverse kinematics and the gait generation strategies. This project is my effort to democratize what I learned.
+This repository documents a fully open-source six-legged robotic platform, intended as an end-to-end reference for the design, construction, and control of a hexapod robot, including mechanics, electronics, control software, kinematics, and gait generation.
 
-- **Software**: The software consists of two parts: a Controller and an Operator. The Controller does the heavy lifting, computing the inverse kinematics for each leg and the body, generating gait sequences, running machine learning/reinforcement learning models and so on; the commands required to set the computed joint values are then sent to the Operator for execution. 
-- **Hardware**: I used a Raspberry Pi as Controller and a Servo2040 board as Operator. Other boards can potentially be used with proper adjustments to the code and configuration.
+While many individual resources exist, they are often fragmented or rely on closed components. A representative example is the [Make Your Pet hexapod robot](https://www.makeyourpet.com/), which is very good, with a huge and active community, but depends on a proprietary application for inverse kinematics and gait generation. This project explicitly avoids that approach: everything is implemented in the open and thoroughly documented.
+
+The software stack is split into two layers:
+- A high-level controller running on a Raspberry Pi, responsible for computationally intensive tasks (such as body and leg inverse kinematics, gait planning, trajectory generation, ...).
+- A low-level firmware running on a Servo2040, responsible for near-real-time tasks (such as servo command execution).
+
+The controller plans motion and behavior, then transmits low-level commands to the Servo2040 for execution. The current version relies on simple position-controlled servos. A more advanced variant will support current-controlled actuators, enabling joint torque estimation via current feedback and allowing more sophisticated control strategies.
 
 ## 🔧 Repositories
 
 The project is split into several repositories. Each repository focuses on a specific aspect of the robot:
 
 1. **[Hexapod-Controller](https://github.com/ggldnl/Hexapod-Controller)**
-   - Contains the software for Controller and everything related to it.
-   - Responsible for high-level computations such as inverse kinematics and machine learning/reinforcement learning models execution.
+   - Contains the software for the controller, intended to run on a Raspberry Pi.
+   - Instructions on how to setup a software environment and deploy the controller.
 
-2. **[Hexapod-Operator](https://github.com/ggldnl/Hexapod-Operator)**
-   - Contains the software for the Operator and everything related to it.
+2. **[Hexapod-Dashboard](https://github.com/ggldnl/Hexapod-Dashboard)**
+   - Three.js dashboard to interface with the robot.
+
+3. **[Hexapod-Firmware](https://github.com/ggldnl/Hexapod-Firmware)**
+   - Contains the software for the Servo2040 firmware.
    - Handles low-level servo control and communication with the Controller.
-   - Contains details on the communication protocol I developed for the two boards to talk.
+   - Details on the HDLC-like protocol I used for the two boards to talk to each other.
 
-3. **[Hexapod-Simulation](https://github.com/ggldnl/Hexapod-Simulation)**
-   - Implements a simulation environment using PyBullet.
-   - Useful for testing gaits without requiring on the actual robot.
+4. **[Hexapod-Simulation](https://github.com/ggldnl/Hexapod-Simulation)**
+   - Implements a simulation environment using PyBullet where to test the robot.
 
-4. **[Hexapod-Hardware](https://github.com/ggldnl/Hexapod-Hardware)**
-   - Includes 3D-printable files for constructing the hexapod body (and the link to the MakerWorld model page for print profiles).
-   - Contains a Bill of Materials and assembly guides.
+5. **[Hexapod-Hardware](https://github.com/ggldnl/Hexapod-Hardware)**
+   - Includes 3D-printable files for constructing the hexapod body.
+   - Contains a Bill of Materials and assembly instructions.
 
-## 🎯 Goals
+6. **[Hexapod-PCB](https://github.com/ggldnl/Hexapod-PCB)**
+   - Files necessary to order an optional PCB that will make assembly easier and cleaner.
 
-- Experiment with my robot and annotate everything I do.
-- Offering detailed guides for replicating the project.
-- Providing accessible resources for everyone to build their own hexapod robots.
+A viewer is accessible [here](https://ggldnl.github.io/projects/hexapod_dashboard/dashboard/index.html) without the need to instasll anything. This will let you interact with the robot and see it perform some basic animations. With the dashboard you will instead be able to connect to your robot and check its state real time (joint values, servo voltage, current draw, ...).
 
 ## 🤝 Contribution
 
