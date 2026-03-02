@@ -34,15 +34,16 @@ The project is split into several repositories. Each repository focuses on a spe
 
 4. **[Hexapod-Simulation](https://github.com/ggldnl/Hexapod-Simulation)**
    - Implements a simulation environment using PyBullet where to test the robot.
+   - Implements a viser-based demo of the robot.
 
 5. **[Hexapod-Hardware](https://github.com/ggldnl/Hexapod-Hardware)**
    - Includes 3D-printable files for constructing the hexapod body.
-   - Contains a Bill of Materials and assembly instructions.
+   - Contains Bill of Materials and assembly instructions.
 
 6. **[Hexapod-PCB](https://github.com/ggldnl/Hexapod-PCB)**
    - Files necessary to order an optional PCB that will make assembly easier and cleaner.
 
-A viewer is accessible [here](https://ggldnl.github.io/projects/hexapod_dashboard/dashboard/index.html) without the need to install anything. This will let you interact with the robot and see it perform some basic animations. With the dashboard you will instead be able to connect to your robot and check its state real time (joint values, servo voltage, current draw, ...).
+A viewer is accessible [here](https://ggldnl.github.io/projects/hexapod_dashboard/dashboard/index.html) without the need to install anything. This will let you interact with the robot and see it perform some basic animations. With the dashboard you will instead be able to connect to your robot, check its state real time (joint values, servo voltage, current draw, ...) and control it.
 
 ## 🤝 Contribution
 
