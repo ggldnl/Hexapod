@@ -32,7 +32,7 @@ The project is split into several repositories. Each repository focuses on a spe
 
 A viewer is accessible [here](https://ggldnl.github.io/projects/hexapod_dashboard/dashboard/index.html). This will let you interact with the robot and see it perform a basic standup animation.
 
-While the Hexapod-Controller gives you Python-level APIs, two ROS2 nodes are also available for those working in a ROS2 ecosystem:
+While the Hexapod-Controller gives you Python-level APIs, some ROS2 nodes are also available for those working in a ROS2 ecosystem:
 
 - **[Hexapod-ROS-Python](https://github.com/ggldnl/Hexapod-ROS-Python)** wraps the Python controller as a ROS2 node, exposing the robot's functionality through a set of topics, actions, and services.
 
