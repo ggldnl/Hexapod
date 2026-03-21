@@ -38,6 +38,8 @@ While the Hexapod-Controller gives you Python-level APIs, two ROS2 nodes are als
 
 - **[Hexapod-ROS-CPP](https://github.com/ggldnl/Hexapod-ROS-CPP)** is a ground-up C++ reimplementation of the full stack as a ROS2 node (Hexapod-Controller + Hexapod-ROS-Python). By avoiding the Python runtime entirely, it should to offer significantly lower latency and higher control-loop throughput.
 
+- **[Hexapod-RVIZ](https://github.com/ggldnl/Hexapod-RVIZ)** contains a launch file to load the robot on RVIZ2. It takes the urdf and meshes directly from Hexapod-Hardware.
+
 ## 🤝 Contribution
 
 Feel free to contribute by opening issues or submitting pull requests. 
