@@ -1,9 +1,5 @@
 # The Hexapod Project
 
-## ⚠️ Work in Progress
-
-This project is actively under development.
-
 ## 🦾 Introduction
 
 This repository documents a fully open-source six-legged robotic platform, intended as an end-to-end reference for the design, construction, and control of a hexapod robot, including mechanics, electronics, control software, kinematics, and gait generation.
@@ -36,7 +32,7 @@ While the Hexapod-Controller gives you Python-level APIs, some ROS2 nodes are al
 
 - **[Hexapod-ROS-Python](https://github.com/ggldnl/Hexapod-ROS-Python)** wraps the Python controller as a ROS2 node, exposing the robot's functionality through a set of topics, actions, and services.
 
-- **[Hexapod-ROS-CPP](https://github.com/ggldnl/Hexapod-ROS-CPP)** is a ground-up C++ reimplementation of the full stack as a ROS2 node (Hexapod-Controller + Hexapod-ROS-Python). By avoiding the Python runtime entirely, it should to offer significantly lower latency and higher control-loop throughput.
+- **[Hexapod-ROS-CPP](https://github.com/ggldnl/Hexapod-ROS-CPP)** is a ground-up C++ reimplementation of the full stack as a ROS2 node (Hexapod-Controller + Hexapod-ROS-Python). By avoiding the Python runtime entirely, it should offer significantly lower latency and higher control-loop throughput.
 
 - **[Hexapod-Gazebo](https://github.com/ggldnl/Hexapod-Gazebo)** contains a launch file to load the robot on Gazebo. It takes the urdf and meshes directly from Hexapod-Hardware.
 
