@@ -63,6 +63,8 @@ flowchart TB
     class APP,CLIENT host
     class ROUTER,LOOP board
     class SERVOS act
+
+    linkStyle default stroke:#000000,color:#000000
 ```
 
 The two boards talk over a UART link at 921600 baud, carrying CRC-framed binary messages.
