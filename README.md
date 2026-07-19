@@ -1,42 +1,142 @@
-# The Hexapod Project
+<div align="center">
 
-## 🦾 Introduction
+# 🦾 The Hexapod Project
 
-This repository documents a fully open-source six-legged robotic platform, intended as an end-to-end reference for the design, construction, and control of a hexapod robot, including mechanics, electronics, control software, kinematics, and gait generation.
+**A fully open-source, low-cost six-legged robot.**
 
-While many individual resources exist, they are often fragmented or rely on closed components. A representative example is the [Make Your Pet hexapod robot](https://www.makeyourpet.com/), which is very good, with a huge and active community, but depends on a proprietary application for inverse kinematics and gait generation. This project explicitly avoids that approach: everything is implemented in the open and thoroughly documented.
+<img src="media/preview.jpg" alt="The actual robot">
 
-The software stack is split into two layers:
-- A high-level controller running on a Raspberry Pi, responsible for computationally intensive tasks (such as body and leg inverse kinematics, gait planning, ...).
-- A low-level firmware running on a Servo2040, responsible for near-real-time tasks (such as servo command execution).
+</div>
 
-The controller plans motion and behavior, then transmits low-level commands to the Servo2040 for execution. The current version relies on simple position-controlled servos. A more advanced variant will support current-controlled actuators, enabling joint torque estimation via current feedback and allowing more sophisticated control strategies.
+## 🌍 Overview
+
+This is an end-to-end reference for building and controlling a hexapod robot: 3D-printable parts and a bill of materials, an optional custom PCB, C++ firmware running the control loop on the robot, a Python wrapper on the Raspberry Pi, ROS2 nodes, and simulators.
+
+Many hexapod resources are fragmented, require costly hardware or rely on closed components. A representative example is the [Make Your Pet hexapod](https://www.makeyourpet.com/), which is very good and has a huge active community, but depends on a proprietary application for inverse kinematics and gait generation. This project explicitly avoids that: everything is implemented in the open and thoroughly documented.
+
+<div align="center">
+
+<table>
+  <tr>
+    <td><img src="media/tripod.gif" alt="Tripod gait"></td>
+    <td><img src="media/look_around.gif" alt="Body pose control"></td>
+  </tr>
+</table>
+
+</div>
+
+## 🧠 Architecture
+
+The main components of the robot are two boards: a Raspberry Pi and a Servo2040. The Raspberry Pi handles configuration, telemetry, and whatever high-level logic you put on top; the Servo2040 owns the near-real-time work.
+
+```mermaid
+flowchart TB
+
+    subgraph PI["Raspberry Pi"]
+        direction TB
+        APP("Python script /<br/>ROS2")
+        CLIENT("Hexapod-Controller:<br/>encapsulates requests (setpoints, provisioning, ...) and sends them over UART")
+        APP --> CLIENT
+    end
+
+    subgraph MCU["Servo2040"]
+        direction TB
+        ROUTER("Router:<br/>decodes the requests and dispatches them<br/>0x30+args → set_vel(args)")
+        LOOP("Near real-time control loop:<br/>turns the desired state into 18 joint angles")
+        ROUTER -- "updates the desired state" --> LOOP
+    end
+
+    SERVOS("Servos")
+
+    CLIENT -->|"requests"| ROUTER
+    ROUTER -->|"telemetry"| CLIENT
+    LOOP -->|"joint angles, every tick"| SERVOS
+
+    classDef pi rx:12,ry:12,fill:#cbdbf5,stroke:#5b8def,color:#12213d
+    classDef mcu rx:12,ry:12,fill:#edc9a1,stroke:#e08a3c,color:#3d2612
+    classDef host fill:#eaf2ff,stroke:#5b8def,color:#12213d
+    classDef board fill:#fff3e6,stroke:#e08a3c,color:#3d2612
+    classDef act fill:#ecf7ec,stroke:#57a05a,color:#14301a
+
+    class PI pi
+    class MCU mcu
+    class APP,CLIENT host
+    class ROUTER,LOOP board
+    class SERVOS act
+```
+
+The two boards talk over a UART link at 921600 baud, carrying CRC-framed binary messages.
+
+Note that on the Servo2040 the router and the control loop are not a pipeline. A frame arriving only updates the desired state; the control loop never stops, and on each tick it reads whatever the current desired state is and turns it into joint angles. A late or dropped message therefore never stalls the robot: it simply keeps executing the last intent it was given, until the watchdog decides the link is gone and sits it down.
+
+The control loop works on a kinematic frame and only maps into servo space at the very last step, which keeps the behaviour layer portable. The current version drives position-controlled servos.
 
 ## 🔧 Repositories
 
-The project is split into several repositories. Each repository focuses on a specific aspect of the robot.
+Each repository focuses on one aspect of the robot and documents it in depth.
 
-- **[Hexapod-Controller](https://github.com/ggldnl/Hexapod-Controller)** is the high-level software stack running on the Raspberry Pi. It manages the full robot lifecycle — startup, idle, walking and shutdown — and lets you command body pose, individual leg positions, which gait is used, and locomotion velocity. Setup instructions for deploying the controller in a Python environment are included.
+<div align="center">
 
-- **[Hexapod-Firmware](https://github.com/ggldnl/Hexapod-Firmware)** is the low-level firmware for the Servo2040. It manages near-real-time servo execution and communicates with the Controller over a custom HDLC-like serial protocol, documented in detail within the repository.
+| Repository | What it is |
+|---|---|
+| [**Hexapod-Firmware**](https://github.com/ggldnl/Hexapod-Firmware) | C++17 firmware for the Servo2040: state machine, gait generator, IK, and the wire protocol |
+| [**Hexapod-Controller**](https://github.com/ggldnl/Hexapod-Controller) | Pi-side Python client: opens the link, provisions the board from YAML configs, streams velocity/body pose setpoints, reads telemetry. Includes a servo calibration tool |
+| [**Hexapod-Simulation**](https://github.com/ggldnl/Hexapod-Simulation) | PyBullet physics sim and a viser 3D visualizer, both driving the host-compiled firmware core |
+| [**Hexapod-Hardware**](https://github.com/ggldnl/Hexapod-Hardware) | 3D-printable parts, full BOM and a step-by-step assembly guide |
+| [**Hexapod-PCB**](https://github.com/ggldnl/Hexapod-PCB) | Optional custom PCB that simplifies the wiring and makes the assembly much cleaner |
 
-- **[Hexapod-Simulation](https://github.com/ggldnl/Hexapod-Simulation)** provides two environments for testing the robot without hardware: a PyBullet physics simulation and a viser-based 3D visualizer for inspecting kinematics and motion interactively.
+</div>
 
-- **[Hexapod-Hardware](https://github.com/ggldnl/Hexapod-Hardware)** contains everything needed to physically build the robot, including 3D-printable body parts, a full bill of materials, and step-by-step assembly instructions.
+For those working in a ROS2 ecosystem:
 
-- **[Hexapod-PCB](https://github.com/ggldnl/Hexapod-PCB)** provides the design files for an optional custom PCB that simplifies wiring and makes the final assembly significantly cleaner.
+<div align="center">
 
-A viewer is accessible [here](https://ggldnl.github.io/projects/hexapod_dashboard/dashboard/index.html). This will let you interact with the robot and see it perform a basic standup animation.
+| Repository | What it is |
+|---|---|
+| [**Hexapod-ROS-Python**](https://github.com/ggldnl/Hexapod-ROS-Python) | Wraps the Python controller as a ROS2 node, exposing the robot through topics, actions and services |
+| [**Hexapod-Gazebo**](https://github.com/ggldnl/Hexapod-Gazebo) | Launch files to load the robot in Gazebo, taking the URDF and meshes straight from Hexapod-Hardware |
 
-While the Hexapod-Controller gives you Python-level APIs, some ROS2 nodes are also available for those working in a ROS2 ecosystem:
+</div>
 
-- **[Hexapod-ROS-Python](https://github.com/ggldnl/Hexapod-ROS-Python)** wraps the Python controller as a ROS2 node, exposing the robot's functionality through a set of topics, actions, and services.
+## ✨ Highlights
 
-- **[Hexapod-ROS-CPP](https://github.com/ggldnl/Hexapod-ROS-CPP)** is a ground-up C++ reimplementation of the full stack as a ROS2 node (Hexapod-Controller + Hexapod-ROS-Python). By avoiding the Python runtime entirely, it should offer significantly lower latency and higher control-loop throughput.
+- **Fully documented binary protocol.** A compact HDLC-style framing (CRC-16/CCITT) over UART at 921600 baud, with three message kinds: fire-and-forget setpoints, request/reply queries, and acknowledged provisioning. Every opcode and payload is [specified byte-by-byte](https://github.com/ggldnl/Hexapod-Firmware#-communication-protocol).
+- **Configure without reflashing.** The board ships with baked-in defaults and is fully functional standalone, but the Pi pushes the whole robot description (geometry, leg mounts, gait parameters, limits, per-servo calibration) from a single YAML file at connect time.
+- **The simulation runs the real firmware.** The same C++ core is compiled into a shared library and driven by the same Python client through an in-process transport. Sim and hardware exercise the code, so what you tune in simulation is what the robot executes.
+- **Safety.** A command watchdog sits the robot down and de-energizes it if the link goes quiet for 500 ms, a software over-current cutoff trips an emergency stop, and every command is clamped against velocity, joint and body-pose limits.
 
-- **[Hexapod-Gazebo](https://github.com/ggldnl/Hexapod-Gazebo)** contains a launch file to load the robot on Gazebo. It takes the urdf and meshes directly from Hexapod-Hardware.
+## 🚀 Getting started
+
+**Try it without hardware.** [Hexapod-Simulation](https://github.com/ggldnl/Hexapod-Simulation) pulls in the firmware, controller and hardware repos as submodules, compiles the firmware core and runs it under PyBullet or viser (optionally including teleop with a gamepad):
+
+```bash
+git clone --recursive https://github.com/ggldnl/Hexapod-Simulation.git
+cd Hexapod-Simulation
+./bridge/build.sh
+mamba env create -f environment.yml && mamba activate hexapod-sim
+python -m simulation.bullet.main  # simulation.viser.main, simulation.bullet.teleop
+```
+
+**Drive the real robot.** Flash [the firmware](https://github.com/ggldnl/Hexapod-Firmware) on the Servo2040, install [the controller](https://github.com/ggldnl/Hexapod-Controller) on the Pi, and you are three lines away from walking:
+
+```python
+from hexapod import connect
+
+bot = connect()                 # opens the serial link, provisions from default config.yml
+bot.enable()                    # stand up
+bot.set_velocity(120, 0, 0)     # vx, vy in mm/s, yaw rate in deg/s
+print(bot.get_telemetry())      # state, odometry, voltage, current
+bot.shutdown()                  # sit down and de-energize the motors
+```
+
+**Build one.** Start from [Hexapod-Hardware](https://github.com/ggldnl/Hexapod-Hardware) for the printed parts, the BOM and the assembly guide, then add [Hexapod-PCB](https://github.com/ggldnl/Hexapod-PCB) if you want to skip the wiring mess.
+
+## 🔭 What's coming
+
+- **Vision.** A camera on the robot, exposed as a ROS2 image topic so perception nodes can subscribe to it. Currently being worked on.
+- **Force sensing.** Some form of contact feedback at the feet — a dedicated sensor, or joint torque estimated from current-controlled actuators — will open the door to terrain-adaptive gaits, reactive foot placement and other closed-loop locomotion strategies. This will likely lead to a redesign.
 
 ## 🤝 Contribution
 
-Feel free to contribute by opening issues or submitting pull requests. 
+Feel free to contribute by opening issues or submitting pull requests.
 Give a ⭐️ to this project if you liked the content.
