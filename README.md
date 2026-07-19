@@ -32,18 +32,18 @@ The main components of the robot are two boards: a Raspberry Pi and a Servo2040.
 ```mermaid
 flowchart TB
 
-    subgraph PI["Raspberry Pi"]
-        direction TB
-        APP("Python script /<br/>ROS2")
-        CLIENT("Hexapod-Controller:<br/>encapsulates requests (setpoints, provisioning, ...) and sends them over UART")
-        APP --> CLIENT
-    end
-
     subgraph MCU["Servo2040"]
         direction TB
         ROUTER("Router:<br/>decodes the requests and dispatches them<br/>0x30+args → set_vel(args)")
         LOOP("Near real-time control loop:<br/>turns the desired state into 18 joint angles")
         ROUTER -- "updates the desired state" --> LOOP
+    end
+
+    subgraph PI["Raspberry Pi"]
+        direction TB
+        APP("Python script /<br/>ROS2")
+        CLIENT("Hexapod-Controller:<br/>encapsulates requests (setpoints, provisioning, ...) and sends them over UART")
+        APP --> CLIENT
     end
 
     SERVOS("Servos")
