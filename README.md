@@ -29,43 +29,7 @@ Many hexapod resources are fragmented, require costly hardware or rely on closed
 
 The main components of the robot are two boards: a Raspberry Pi and a Servo2040. The Raspberry Pi handles configuration, telemetry, and whatever high-level logic you put on top; the Servo2040 owns the near-real-time work.
 
-```mermaid
-flowchart TB
-
-    subgraph MCU["Servo2040"]
-        direction TB
-        ROUTER("Router:<br/>decodes the requests and dispatches them<br/>0x30+args → set_vel(args)")
-        LOOP("Near real-time control loop:<br/>turns the desired state into 18 joint angles")
-        ROUTER -- "updates the desired state" --> LOOP
-    end
-
-    subgraph PI["Raspberry Pi"]
-        direction TB
-        APP("Python script /<br/>ROS2")
-        CLIENT("Hexapod-Controller:<br/>encapsulates requests (setpoints, provisioning, ...) and sends them over UART")
-        APP --> CLIENT
-    end
-
-    SERVOS("Servos")
-
-    CLIENT -->|"requests"| ROUTER
-    ROUTER -->|"telemetry"| CLIENT
-    LOOP -->|"joint angles, every tick"| SERVOS
-
-    classDef pi rx:12,ry:12,fill:#cbdbf5,stroke:#5b8def,color:#12213d
-    classDef mcu rx:12,ry:12,fill:#edc9a1,stroke:#e08a3c,color:#3d2612
-    classDef host fill:#eaf2ff,stroke:#5b8def,color:#12213d
-    classDef board fill:#fff3e6,stroke:#e08a3c,color:#3d2612
-    classDef act fill:#ecf7ec,stroke:#57a05a,color:#14301a
-
-    class PI pi
-    class MCU mcu
-    class APP,CLIENT host
-    class ROUTER,LOOP board
-    class SERVOS act
-
-    linkStyle default stroke:#000000,color:#000000
-```
+<img src="media/architecture.jpg" alt="Architecture">
 
 The two boards talk over a UART link at 921600 baud, carrying CRC-framed binary messages.
 
