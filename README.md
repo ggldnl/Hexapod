@@ -1,8 +1,8 @@
-<div align="center">
-
 # 🦾 The Hexapod Project
 
 **A fully open-source, low-cost six-legged robot.**
+
+<div align="center">
 
 <img src="media/preview.jpg" alt="The actual robot">
 
@@ -10,20 +10,18 @@
 
 ## 🌍 Overview
 
-This is an end-to-end reference for building and controlling a hexapod robot: 3D-printable parts and a bill of materials, an optional custom PCB, C++ firmware running the control loop on the robot, a Python wrapper on the Raspberry Pi, ROS2 nodes, and simulators.
+This is an end-to-end reference for building and controlling a hexapod robot: 3D-printable parts and a bill of materials, an optional custom PCB, C++ firmware running the control loop on the robot, a high-level interface with that running on a Raspberry Pi, python APIs, ROS2 nodes and simulators (Gazebo, PyBullet, Viser).
 
 Many hexapod resources are fragmented, require costly hardware or rely on closed components. A representative example is the [Make Your Pet hexapod](https://www.makeyourpet.com/), which is very good and has a huge active community, but depends on a proprietary application for inverse kinematics and gait generation. This project explicitly avoids that: everything is implemented in the open and thoroughly documented.
 
 <div align="center">
 
-<table>
-  <tr>
-    <td><img src="media/tripod.gif" alt="Tripod gait"></td>
-    <td><img src="media/look_around.gif" alt="Body pose control"></td>
-  </tr>
-</table>
+<img src="media/look_around.gif" alt="Body pose control">
+<img src="media/tripod_spin.gif" alt="Tripod gait">
 
 </div>
+
+> Note: It looks like it's wobbling a lot, but it is only due to the servos not being calibrated yet.
 
 ## 🧠 Architecture
 
